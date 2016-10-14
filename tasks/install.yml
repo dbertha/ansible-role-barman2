@@ -1,0 +1,12 @@
+---
+
+- lineinfile: dest=/etc/apt/sources.list line="deb http://apt.postgresql.org/pub/repos/apt/ {{ansible_distribution_release}}-pgdg main"
+
+- name: install required barman packages
+  apt:
+    pkg: "{{ item }}"
+    state: "{{ barman_package_state }}"
+    update_cache: yes
+    force: yes
+  with_items: "{{ barman_packages }}"
+

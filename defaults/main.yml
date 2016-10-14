@@ -1,0 +1,106 @@
+---
+
+barman_package_state: present
+
+barman_packages:
+  - barman=2*
+  - bzip2
+  - gzip
+  - xz-utils
+  - postgresql-client-common
+
+barman_use_rsync: true
+# barman_ssh_private_key must be set if barman_use_rsync
+# barman_ssh_public_key must be set if barman_use_rsync
+
+
+barman_active: true
+barman_archiver: false
+barman_archiver_batch_size: 0
+barman_streaming_archiver: off
+barman_streaming_archiver_batch_size: 0
+barman_streaming_archiver_name: barman_receive_wal
+barman_streaming_backup_name: barman_streaming_backup
+barman_streaming_conninfo: conninfo
+#barman_backup_directory: 
+barman_backup_method: rsync
+barman_slot_name: None
+barman_user: barman
+barman_home: /var/lib/barman
+barman_lock_directory: "{{ barman_home }}"
+barman_log_file: /var/log/barman/barman.log
+barman_log_level: INFO  #possible values : CRITICAL,ERROR,WARNING,INFO,DEBUG,NOTSET
+barman_compression: gzip #possible values are None (default), bzip2, gzip, pigz, pygzip or pybzip2
+barman_custom_compression_filter: ""
+barman_custom_decompression_filter: ""
+barman_reuse_backup: "off"
+barman_pre_backup_script: /bin/true
+barman_pre_backup_retry_script: /bin/true
+barman_post_backup_retry_script: /bin/true
+barman_post_backup_script: /bin/true
+barman_pre_archive_script: /bin/true
+barman_pre_archive_retry_script: /bin/true
+barman_post_archive_retry_script: /bin/true
+barman_post_archive_script: /bin/true
+barman_configuration_files_directory: /etc/barman.d
+barman_minimum_redundancy: 1
+barman_retention_policy: ""
+# Examples of retention policies
+# Retention policy (disabled)
+#retention_policy =
+# Retention policy (based on redundancy)
+#retention_policy = REDUNDANCY 2
+# Retention policy (based on recovery window)
+#retention_policy = RECOVERY WINDOW OF 4 WEEKS
+
+barman_wal_retention_policy: "main"
+barman_retention_policy_mode: "auto"
+barman_bandwidth_limit: 0
+barman_immediate_checkpoint: false
+barman_network_compression: false
+barman_backup_options: exclusive_backup #Should be concurrent_backup for postgres backup_method
+barman_basebackup_retry_times: 0
+barman_basebackup_retry_sleep: 30
+barman_check_timeout: 30
+barman_last_backup_maximum_age: ""
+
+# barman_servers:
+#   - name: streaming_example
+#     description: Main PostgreSQL Database
+#     conn_host: pg
+#     conn_port: 5432
+#     conn_user: postgres
+#     conn_password: 1qa2ws3ed
+#     minimum_redundancy: "{{ barman_minimum_redundancy }}"
+#     retention_policy: ""
+#     backup_method: postgres
+#     streaming_conninfo: host=pg user=streaming_barman
+#     streaming_archiver: on
+#     slot_name: barman
+#   - name: archive_example
+#     description: Main PostgreSQL Database
+#     ssh_command: ssh postgres@pg
+#     conn_host: pg
+#     conn_port: 5432
+#     conn_user: postgres
+#     conn_password: 1qa2ws3ed
+#     minimum_redundancy: "{{ barman_minimum_redundancy }}"
+#     retention_policy: ""
+#     backup_method: rsync
+#     archiver: on
+#     reuse_backup: "{{ barman_reuse_backup }}"
+
+barman_servers: []
+
+barman_backups_cron: []
+
+# barman_backups_cron:
+#   - name: main    # It's a barman backup server which we should backuping
+#     minute: 0     # Only this param is mandatory, other can be omitted
+#     hour: 2
+#     day: *
+#     month: *
+#     weekday: *
+#     disabled: false
+#
+## More information about cron: http://docs.ansible.com/ansible/cron_module.html
